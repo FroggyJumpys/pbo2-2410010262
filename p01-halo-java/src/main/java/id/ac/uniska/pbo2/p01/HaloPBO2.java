@@ -22,6 +22,10 @@ public class HaloPBO2 {
         System.out.println("Versi Java      : " + System.getProperty("java.version"));
         System.out.println("Vendor JDK      : " + System.getProperty("java.vendor"));
         System.out.println("Sistem operasi  : " + System.getProperty("os.name"));
+        System.out.println("");
+        
+        KartuMahasiswa kartu = new KartuMahasiswa();
+        kartu.tampilkanKartu();
         
     }
     
