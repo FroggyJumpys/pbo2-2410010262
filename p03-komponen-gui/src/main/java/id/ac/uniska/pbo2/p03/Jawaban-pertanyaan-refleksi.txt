@@ -1,0 +1,8 @@
+Jawaban pertanyaan refleksi
+1. 
+- Top level container itu adalah window utama yang ditampilkan contohnya JFrameForm.
+- Intermediate container adalah container yang membungkus component, contohnya JPanel
+- Atomic component adalah component yang dapat di interaksi oleh user. contohnya Button, TextField, dll.
+2.Supaya lebih rapi dan teroganisir
+3. Saya akan menggunakan JComboBox ketika ingin menampilkan banyak pilihan kepada user dengan hanya boleh memilih satu pilihan saja.
+5. Supaya package Flatlaf dan mode terangnya langsung dapat digunakan ketika form atau window sudah load.
