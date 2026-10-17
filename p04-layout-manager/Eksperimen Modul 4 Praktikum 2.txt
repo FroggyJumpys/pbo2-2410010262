@@ -1,0 +1,4 @@
+Eksperimen Modul 4 Praktikum 2
+1. Tombol yang awalnya bersusun dari kiri ke kanan berubah menjadi tengah dan jika dikecilkan windownya maka setiap baris akan menumpuk kebawah.
+2. Total baris adalah 5, dikarenakan rows di set jadi 0, maka property baris menjadi tidak terdefinisi menjadikannya baris dapat menyesuaikan dengan banyaknya elemen dan juga property kolom.
+3. Lebar tombol berubah secara horizontal, menyentuh ujung samping window. Dan dengan adanya vertical strut tombol menjadi memiliki jarak antara satu sama lain.

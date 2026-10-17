@@ -1,0 +1,4 @@
+Eksperimen Modul 4 Praktikum 4
+1. TIdak terjadi apa apa.
+2. Isian form melekat pada center dari windows, sedangkan jika seperti semula, maka isian form akan menyesuaikan.
+3. Bagian alamat text area.
