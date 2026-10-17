@@ -1,0 +1,5 @@
+1. Sebaiknya hindari Null Layout dan Absolute Layout karena keduanya menggunakan posisi piksel yang tetap. Akibatnya, tampilan UI tidak dapat menyesuaikan ukuran window dan komponennya berisiko terpotong.
+2. Pada FlowLayout, ketika window diperkecil, susunan elemennya yang berubah (elemen turun ke baris berikutnya). Sedangkan pada GridLayout, ketika window diperkecil, ukuran setiap elemennya yang ikut mengecil.
+3. Tujuannya agar form tetap rapi meskipun window dilebarkan. Pengaturan ini umumnya diterapkan pada kolom isian.
+4. Tujuannya agar baris-baris form tetap berada di bagian atas ketika window dipertinggi.
+5. Prinsip desain adalah keselarasan dan urutan yang wajar. Keselarasan dari atas sampai Bawah yang mudah dibaca dan juga urutan ui yang wajar dan umum.
