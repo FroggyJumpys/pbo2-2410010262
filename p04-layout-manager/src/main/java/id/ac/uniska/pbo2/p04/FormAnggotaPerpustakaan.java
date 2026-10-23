@@ -4,6 +4,10 @@
  */
 package id.ac.uniska.pbo2.p04;
 import com.formdev.flatlaf.FlatLightLaf;
+import javax.swing.JOptionPane;
+import javax.swing.ButtonModel;
+import javax.swing.Timer;
+
 
 /**
  *
@@ -24,6 +28,11 @@ public class FormAnggotaPerpustakaan extends javax.swing.JFrame {
         kontakLabel.putClientProperty("FlatLaf.styleClass", "h4");
         emailField.putClientProperty("JTextField.placeholderText", "nama@contoh.com");
         hpField.putClientProperty("JTextField.placeholderText", "08xxxxxxxxxx");
+
+        mahasiswaRadio.setActionCommand("Mahasiswa");
+        dosenRadio.setActionCommand("Dosen");
+        umumRadio.setActionCommand("Umum");
+
         getRootPane().setDefaultButton(daftarButton);
 
         pack();
@@ -71,9 +80,15 @@ public class FormAnggotaPerpustakaan extends javax.swing.JFrame {
         alamatScrollPane = new javax.swing.JScrollPane();
         alamatTextArea = new javax.swing.JTextArea();
         persetujuanCheck = new javax.swing.JCheckBox();
+        angkaNPMLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Form Anggota Perpustakaan");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         headerPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 16, 8, 16));
         headerPanel.setName("headerPanel"); // NOI18N
@@ -91,9 +106,12 @@ public class FormAnggotaPerpustakaan extends javax.swing.JFrame {
         buttonPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 8, 0));
 
         batalButton.setText("Batal");
+        batalButton.addActionListener(this::batalButtonActionPerformed);
         buttonPanel.add(batalButton);
 
         daftarButton.setText("Daftar");
+        daftarButton.setEnabled(false);
+        daftarButton.addActionListener(this::daftarButtonActionPerformed);
         buttonPanel.add(daftarButton);
 
         getContentPane().add(buttonPanel, java.awt.BorderLayout.PAGE_END);
@@ -189,6 +207,12 @@ public class FormAnggotaPerpustakaan extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 6, 12);
         formPanel.add(persetujuanLabel, gridBagConstraints);
+
+        npmField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                npmFieldKeyReleased(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -215,8 +239,8 @@ public class FormAnggotaPerpustakaan extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, -20, 0, 0);
         formPanel.add(mahasiswaRadio, gridBagConstraints);
 
         jenisAnggotaGroup.add(dosenRadio);
@@ -225,7 +249,7 @@ public class FormAnggotaPerpustakaan extends javax.swing.JFrame {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 170);
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         formPanel.add(dosenRadio, gridBagConstraints);
 
         jenisAnggotaGroup.add(umumRadio);
@@ -233,8 +257,9 @@ public class FormAnggotaPerpustakaan extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 130, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 11);
         formPanel.add(umumRadio, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -262,12 +287,14 @@ public class FormAnggotaPerpustakaan extends javax.swing.JFrame {
         formPanel.add(alamatScrollPane, gridBagConstraints);
 
         persetujuanCheck.setText("Setuju");
+        persetujuanCheck.addItemListener(this::persetujuanCheckItemStateChanged);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 11;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         formPanel.add(persetujuanCheck, gridBagConstraints);
+        formPanel.add(angkaNPMLabel, new java.awt.GridBagConstraints());
 
         isiFormPanel.add(formPanel, java.awt.BorderLayout.NORTH);
 
@@ -275,6 +302,65 @@ public class FormAnggotaPerpustakaan extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void persetujuanCheckItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_persetujuanCheckItemStateChanged
+        // TODO add your handling code here:
+        daftarButton.setEnabled(persetujuanCheck.isSelected());
+    }//GEN-LAST:event_persetujuanCheckItemStateChanged
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        int jawab = JOptionPane.showConfirmDialog(this,
+                "Apakah anda ingin keluar dari aplikasi?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (jawab == JOptionPane.YES_OPTION) {
+            dispose();
+        }
+    }//GEN-LAST:event_formWindowClosing
+
+    private void batalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_batalButtonActionPerformed
+        // TODO add your handling code here:
+        hapus();
+    }//GEN-LAST:event_batalButtonActionPerformed
+
+    private void daftarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_daftarButtonActionPerformed
+        // TODO add your handling code here:
+        tampilkan();
+    }//GEN-LAST:event_daftarButtonActionPerformed
+
+    private void npmFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_npmFieldKeyReleased
+        // TODO add your handling code here:
+        int totalNPM = npmField.getText().length();
+        angkaNPMLabel.setText("Total " + totalNPM + " digit");
+    }//GEN-LAST:event_npmFieldKeyReleased
+
+    private void hapus() {
+        npmField.setText("");
+        namaLengkapField.setText("");
+        prodiCombo.setSelectedIndex(0);
+        jenisAnggotaGroup.clearSelection();
+        emailField.setText("");
+        hpField.setText("");
+        alamatTextArea.setText("");
+        persetujuanCheck.setSelected(false);
+
+        // Memfokuskan kembali ke window
+        npmField.requestFocusInWindow();
+    }
+
+    private void tampilkan() {
+        // Dapat melalui bantuin ai dari prompt "Bagaimana cara mendapatkan radio button yang terpilih dari buttongroup"
+        ButtonModel terpilih = jenisAnggotaGroup.getSelection();
+        String jenisAnggota = (terpilih != null) ? terpilih.getActionCommand() : "Belum dipilih";
+
+        String hasil = "NPM: " + npmField.getText() + "\n"
+                       + "Nama Lengkap: " + namaLengkapField.getText() + "\n"
+                       + "Program Studi: " + prodiCombo.getSelectedItem().toString() + "\n"
+                       + "Jenis Anggota: " + jenisAnggota + "\n"
+                       + "Email: " + emailField.getText() + "\n"
+                       + "Nomor HP: " + hpField.getText() + "\n"
+                       + "Alamat: " + alamatTextArea.getText();
+        JOptionPane.showMessageDialog(this, hasil, "Data Anggota", JOptionPane.INFORMATION_MESSAGE);
+    }
 
     /**
      * @param args the command line arguments
@@ -290,6 +376,7 @@ public class FormAnggotaPerpustakaan extends javax.swing.JFrame {
     private javax.swing.JLabel alamatLabel;
     private javax.swing.JScrollPane alamatScrollPane;
     private javax.swing.JTextArea alamatTextArea;
+    private javax.swing.JLabel angkaNPMLabel;
     private javax.swing.JButton batalButton;
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JButton daftarButton;
