@@ -400,7 +400,7 @@ public class FormAnggota extends javax.swing.JFrame {
 
     private void hpFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_hpFieldFocusLost
         // TODO add your handling code here:
-        if (hpField.getText().isBlank()) {
+        if (!hpField.getText().isBlank()) {
             periksaHp();
         }
     }//GEN-LAST:event_hpFieldFocusLost
