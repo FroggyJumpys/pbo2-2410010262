@@ -1,0 +1,14 @@
+1. Huruf tidak bisa diketik dikarenakan baris code:
+if (!Character.isDigit(evt.getKeyChar()) || penuh) {
+    evt.consume(); // Karakter tidak dimasukkan ke isian
+}
+
+2. Pesan kesalahan muncul ketika user keluar focus atau lost focus dari field email.
+
+3. Karena pada code event di bagian namaField, program akan mendeteksi jikalau text field itu tidak kosong, maka akan menampilkan pesan kesalahan.
+
+4. Field npm yang akan mendapatkan fokus karena pada kode, jika isian kosong dan kita coba daftar. ia akan memfokuskan pada field pertama.
+
+5. namaField yang terfokuskan.
+
+6. Data tetap ada karena program hanya akan dipanggil jika memilih opsi yes pada dialog konfirmasi.
