@@ -8,7 +8,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>25</maven.compiler.release>
-        <exec.mainClass>id.ac.uniska.pbo2.uts.P08UtsB</exec.mainClass>
+        <exec.mainClass>id.ac.uniska.pbo2.uts.DaftarBelanja</exec.mainClass>
     </properties>
     <dependencies>
         <dependency>

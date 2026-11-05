@@ -1,0 +1,333 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package id.ac.uniska.pbo2.uts;
+
+import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.table.TableRowSorter;
+
+/**
+ *
+ * @author ASUS
+ * NAMA: Muhammad Putra Ramadhan
+ * NPM: 2410010262
+ */
+public class DaftarBelanja extends javax.swing.JFrame {
+
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DaftarBelanja.class.getName());
+    private final BarangTableModel model = new BarangTableModel();
+    private final TableRowSorter<BarangTableModel> sorter = new TableRowSorter<>(model);
+
+    private static final int HARGA_MAKS = 10_000_000;
+
+    private final JLabel hasilLabel = new JLabel();
+
+    /**
+     * Creates new form DaftarBelanja
+     */
+    public DaftarBelanja() {
+        initComponents();
+        siapkanForm();
+    }
+
+    private void siapkanForm() {
+        barangTabel.setRowSorter(sorter);
+
+
+        jumlahSpinner.setModel(new SpinnerNumberModel(1, 1, 9999, 1));
+
+        jumlahPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, 5));
+        jumlahPanel.add(hasilLabel);
+        perbaruiRingkasan();
+
+        tambahButton.addActionListener(e -> tambah());
+        bersihkanButton.addActionListener(e -> bersihkan());
+        // Enter di field mana pun sama dengan menekan Tambah
+        getRootPane().setDefaultButton(tambahButton);
+
+        pack();
+        setLocationRelativeTo(null);
+    }
+
+    private String validasiNama(String nama) {
+        String teks = nama.trim();
+        if (teks.isEmpty()) {
+            return "Nama barang wajib diisi";
+        }
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if (model.get(i).namaBarang().trim().equalsIgnoreCase(teks)) {
+                return "Barang " + teks + " sudah ada di daftar";
+            }
+        }
+        return null;
+    }
+
+    private String validasiHarga(String harga) {
+        String pesan = "Harga harus angka 1 sampai " + HARGA_MAKS;
+        String teks = harga.trim();
+        if (!teks.matches("\\d{1,8}")) {
+            return pesan;
+        }
+        int nilai = Integer.parseInt(teks);
+        if (nilai < 1 || nilai > HARGA_MAKS) {
+            return pesan;
+        }
+        return null;
+    }
+
+    private void tampilkanPesan(JLabel label, JComponent field, String pesan) {
+        if (pesan == null) {
+            label.setText(" ");
+            field.putClientProperty("JComponent.outline", null);
+        } else {
+            label.setText(pesan);
+            label.setForeground(Color.RED);
+            field.putClientProperty("JComponent.outline", "error");
+        }
+    }
+
+    private void tambah() {
+        String pesanNama = validasiNama(namaField.getText());
+        String pesanHarga = validasiHarga(hargaField.getText());
+        tampilkanPesan(namaPesan, namaField, pesanNama);
+        tampilkanPesan(hargaPesan, hargaField, pesanHarga);
+
+        if (pesanNama != null) {
+            namaField.requestFocusInWindow();
+            return;
+        }
+        if (pesanHarga != null) {
+            hargaField.requestFocusInWindow();
+            return;
+        }
+
+        try {
+            jumlahSpinner.commitEdit();
+        } catch (java.text.ParseException ex) {
+            // nilai tidak valid, spinner kembali ke nilai terakhir yang sah
+        }
+
+        int harga = Integer.parseInt(hargaField.getText().trim());
+        int jumlah = (Integer) jumlahSpinner.getValue();
+        Kategori kategori = (Kategori) kategoriCombo.getSelectedItem();
+        model.tambah(new Barang(namaField.getText().trim(), kategori, harga, jumlah,
+                (int) BarangTableModel.hitungSubTotal(harga, jumlah)));
+
+        bersihkan();
+        perbaruiRingkasan();
+        namaField.requestFocusInWindow();
+    }
+
+    private void bersihkan() {
+        namaField.setText("");
+        hargaField.setText("");
+        kategoriCombo.setSelectedIndex(0);
+        jumlahSpinner.setValue(1);
+        tampilkanPesan(namaPesan, namaField, null);
+        tampilkanPesan(hargaPesan, hargaField, null);
+        tampilkanPesan(kategoriPesan, kategoriCombo, null);
+        tampilkanPesan(jumlahPesan, jumlahSpinner, null);
+        namaField.requestFocusInWindow();
+    }
+
+    private void perbaruiRingkasan() {
+        hasilLabel.setText("Total: " + BarangTableModel.formatRupiah(model.getTotal())
+                + ", Diskon: " + BarangTableModel.formatRupiah(model.getDiskon())
+                + ", Bayar: " + BarangTableModel.formatRupiah(model.getBayar()));
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        isianPanel = new javax.swing.JPanel();
+        formIsian = new javax.swing.JPanel();
+        namaLabel = new javax.swing.JLabel();
+        kategoriLabel = new javax.swing.JLabel();
+        hargaLabel = new javax.swing.JLabel();
+        jumlahLabel = new javax.swing.JLabel();
+        namaPesan = new javax.swing.JLabel();
+        hargaPesan = new javax.swing.JLabel();
+        kategoriPesan = new javax.swing.JLabel();
+        jumlahPesan = new javax.swing.JLabel();
+        namaField = new javax.swing.JTextField();
+        hargaField = new javax.swing.JTextField();
+        kategoriCombo = new javax.swing.JComboBox<>();
+        jumlahSpinner = new javax.swing.JSpinner();
+        buttonIsian = new javax.swing.JPanel();
+        tambahButton = new javax.swing.JButton();
+        bersihkanButton = new javax.swing.JButton();
+        isiPanel = new javax.swing.JPanel();
+        jumlahPanel = new javax.swing.JPanel();
+        barangTabelPane = new javax.swing.JScrollPane();
+        barangTabel = new javax.swing.JTable();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Daftar Belanja");
+
+        isianPanel.setLayout(new java.awt.BorderLayout());
+
+        formIsian.setLayout(new java.awt.GridBagLayout());
+
+        namaLabel.setText("Nama Barang");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        formIsian.add(namaLabel, gridBagConstraints);
+
+        kategoriLabel.setText("Kategori");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        formIsian.add(kategoriLabel, gridBagConstraints);
+
+        hargaLabel.setText("Harga (Rp)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        formIsian.add(hargaLabel, gridBagConstraints);
+
+        jumlahLabel.setText("Jumlah");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        formIsian.add(jumlahLabel, gridBagConstraints);
+
+        namaPesan.setText(" ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        formIsian.add(namaPesan, gridBagConstraints);
+
+        hargaPesan.setText(" ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        formIsian.add(hargaPesan, gridBagConstraints);
+
+        kategoriPesan.setText(" ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        formIsian.add(kategoriPesan, gridBagConstraints);
+
+        jumlahPesan.setText(" ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        formIsian.add(jumlahPesan, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        formIsian.add(namaField, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        formIsian.add(hargaField, gridBagConstraints);
+
+        kategoriCombo.setModel(new javax.swing.DefaultComboBoxModel<>(Kategori.values()));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        formIsian.add(kategoriCombo, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        formIsian.add(jumlahSpinner, gridBagConstraints);
+
+        buttonIsian.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
+
+        tambahButton.setText("Tambah");
+        buttonIsian.add(tambahButton);
+
+        bersihkanButton.setText("Bersihkan");
+        buttonIsian.add(bersihkanButton);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 8;
+        formIsian.add(buttonIsian, gridBagConstraints);
+
+        isianPanel.add(formIsian, java.awt.BorderLayout.PAGE_START);
+
+        getContentPane().add(isianPanel, java.awt.BorderLayout.WEST);
+
+        isiPanel.setLayout(new java.awt.BorderLayout());
+        isiPanel.add(jumlahPanel, java.awt.BorderLayout.SOUTH);
+
+        barangTabel.setModel(model);
+        barangTabelPane.setViewportView(barangTabel);
+
+        isiPanel.add(barangTabelPane, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(isiPanel, java.awt.BorderLayout.CENTER);
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        FlatLightLaf.setup();
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> new DaftarBelanja().setVisible(true));
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable barangTabel;
+    private javax.swing.JScrollPane barangTabelPane;
+    private javax.swing.JButton bersihkanButton;
+    private javax.swing.JPanel buttonIsian;
+    private javax.swing.JPanel formIsian;
+    private javax.swing.JTextField hargaField;
+    private javax.swing.JLabel hargaLabel;
+    private javax.swing.JLabel hargaPesan;
+    private javax.swing.JPanel isiPanel;
+    private javax.swing.JPanel isianPanel;
+    private javax.swing.JLabel jumlahLabel;
+    private javax.swing.JPanel jumlahPanel;
+    private javax.swing.JLabel jumlahPesan;
+    private javax.swing.JSpinner jumlahSpinner;
+    private javax.swing.JComboBox<Kategori> kategoriCombo;
+    private javax.swing.JLabel kategoriLabel;
+    private javax.swing.JLabel kategoriPesan;
+    private javax.swing.JTextField namaField;
+    private javax.swing.JLabel namaLabel;
+    private javax.swing.JLabel namaPesan;
+    private javax.swing.JButton tambahButton;
+    // End of variables declaration//GEN-END:variables
+}
